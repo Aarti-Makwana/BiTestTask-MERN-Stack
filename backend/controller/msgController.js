@@ -1,5 +1,5 @@
 import { request } from "express";
-import messagesModal from "../models/messageModal.js";
+import messagesModal from "../model/messageModal.js";
 
 export const addMessageController =async(request,response)=>{
     const {chatId,senderId,text}=request.body;
@@ -19,9 +19,10 @@ export const addMessageController =async(request,response)=>{
 }
 
 export const getMessagesController =async(request,response)=>{
-    const {chatId}=request.params;
+    console.log("getMessagesController");
+    const chatId = request.params.chatId;
     try {
-        const result =await messagesModal.find({chatId})
+        const result =await messagesModal.find({chatId:chatId});
         console.log(result);
         response.status(200).json(result)
         

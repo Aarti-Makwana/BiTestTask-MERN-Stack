@@ -1,61 +1,33 @@
-import chatModel from "../model/chatModal.js";
-import messagesModal from "../model/messageModal.js";
-
+import { json, request } from "express";
+import chatModel from "../model/chatModal.js"
 export const createChatController =async (request,response)=>{
+    console.log("Hi inside creta char",request.body);
+
     try {
         const chats = await chatModel.find({
             members: {
                 $all: [request.body.senderId, request.body.reciverId]
             }
         });
-        console.log(chats);
+        console.log("chat ----- ",chats);
         if (chats.length==0) {
          const newChat = new  chatModel({ members:[request.body.senderId,request.body.reciverId]});
-         newChat.save()
-        
-         const newMessage={
-            senderId:request.body.senderId,
-            chatId:newChat._id,
-            text:request.body.message
-        }
-        const message= new messagesModal(newMessage)
-        try {
-            const result=await message.save() 
-
-        } catch (error) {
-            console.error("Error in  createChatController",error);
-            response.status(500).json(error)
-        }
+         newChat.save();
+         console.log("THis new chat id",newChat);
+         response.status(200).json({chatID:newChat._id})
     }
 
     else{
         console.log("chat already exsist",chats[0]._id);
-        const newMessage={
-            senderId:request.body.senderId,
-            chatId:chats[0]._id,
-            text:request.body.message
-        }
-
-        const message= new messagesModal(newMessage)
-        try {
-            const result=await message.save()
-
-        } catch (error) {
-            console.log("error 47",error);
-            response.status(500).json(error)
-        }
-
+        response.status(200).json({chatID:chats[0]._id})
     } 
-
-
 
 } 
 catch (error) {
     response.status(500).json(error)
     console.log("error 58",error);
 }
-response.status(200).json({message:"Message Sent Successfully"})
-console.log("success");
+
 }
 
 export const userChatsController = async (request,response)=>{
@@ -81,4 +53,4 @@ export const findChatController = async (request,response)=>{
         console.error("Error in findChatController",error);
         response.status(500).json(error)
     }
-}
+} 

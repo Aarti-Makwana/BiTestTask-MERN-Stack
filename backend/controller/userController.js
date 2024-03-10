@@ -1,5 +1,4 @@
 import userModel from '../model/userModel.js';
-
 import bcrypt from 'bcrypt';
 export const userRegistrationController = async(req,res)=>{
   console.log(req.body,"user registration")
