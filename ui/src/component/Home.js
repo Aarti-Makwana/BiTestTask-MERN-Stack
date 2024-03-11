@@ -34,7 +34,8 @@ function Home() {
     }
     return (<>
         <div className="container my-3">
-            <center><h1>Do Chat With Anyone</h1></center>
+            <center><h2><span>Welcome</span> <span className="text-info">{activeUser_email}</span></h2></center>
+            <center><h3>Do Chat With Anyone</h3></center>
             <table className="table my-5">
                 <thead>
                     <tr>
